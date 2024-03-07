@@ -6,6 +6,8 @@ name: Python Publish Package
 on:
   push:
     branches-ignore: [ "**" ]
+    tags:
+      - "v**"
 
 jobs:
   build:
