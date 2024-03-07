@@ -6,15 +6,15 @@ A simple template engine wrapper for Python that uses Pydantic models to validat
 
 Basic installation w/o any extras, you need to include a supported template engine in your project dependencies:
 ```bash
-pip install typed-template
+pip install typedtemplate
 ```
 
 Installation with Jinja2 support, will install Jinja2 as a dependency:
 ```bash
-pip install typed-template[jinja2]
+pip install typedtemplate[jinja2]
 ```
 
-## Support Template Engines
+## Support Template Engines 
 
 We currently support the following template engines:
 - [Jinja2](https://jinja.palletsprojects.com/en/3.0.x/)
@@ -204,4 +204,4 @@ We're open to contributions! If you have any ideas, feel free to open an issue o
 
 # License
 
-This repository is licensed under the MIT license. See [LICENSE](LICENSE) for details.
+This repository is licensed under the MIT license. See [LICENSE](https://raw.githubusercontent.com/Shakakai/typedtemplate/main/LICENSE) for details.
