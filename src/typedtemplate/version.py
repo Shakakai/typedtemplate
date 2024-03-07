@@ -3,7 +3,7 @@ from __future__ import annotations as _annotations
 
 __all__ = 'VERSION', 'version_short'
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 """The version of TypedTemplate."""
 
 
