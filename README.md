@@ -17,7 +17,9 @@ pip install typed-template[jinja2]
 
 ## Usage
 
-### Hello World Example:
+### Hello World Example
+
+A basic example using a string template defined in python.
 
 ```python
 from pydantic import Field
@@ -42,7 +44,11 @@ template = HelloWorldTemplate(name="World")
 print(template.render()) # "Hello, World!"
 ```
 
-### Jinja2 File Template Example:
+### Jinja2 File Template Example
+
+This examples shows how to configure Jinja2 to look for templates in a specific directory.
+Note, this example also turns debugging on, which will print warnings and errors to console.
+The template is specified via the `template_file` attribute, which is the file name of the template to look for in the configured directories.
 
 ```python
 import os
@@ -72,7 +78,12 @@ template = HelloWorldFileTemplate(name="World")
 print(template.render()) # "Hello, World!"
 ```
 
-### Django File Template Example:
+### Django File Template Example
+
+This examples shows how to configure Django to look for templates in a specific directory.
+In most cases, you will only use Django templates with the Django framework. 
+This example assumes you ARE NOT using the Django framework and calls the `settings.configure` method to configure Django for you.
+If you are using the Django framework, please look at the next example for the subtle difference.
 
 ```python
 import os
@@ -103,6 +114,36 @@ template = HelloWorldFileTemplate(name="World")
 # Model validation is also run when `render` is called
 print(template.render()) # "Hello, World!"
 ```
+
+### Use with the Django Web Framework
+This example assume you are using the Django web framework.
+You should have already configured your Django settings to look for templates in a specific directory.
+See the Django documentation for more information on template directory configuration [https://docs.djangoproject.com/en/5.0/topics/templates/#configuration](https://docs.djangoproject.com/en/5.0/topics/templates/#configuration)
+
+```python
+import os
+from pydantic import Field
+from typedtemplate import TypedTemplate, DjangoTemplateEngine
+
+# Tells the engine to use the already configured Django settings
+engine = DjangoTemplateEngine(skip_django_configure=True)
+
+
+class HelloWorldFileTemplate(TypedTemplate):
+    # Tells the template what engine to use
+    template_engine = engine
+    # This will look for a file called "hello_world.txt" in directories configured in your Django settings
+    # Assume the template is the same as the Hello World example above
+    template_file = "hello_world.txt"
+    # The typed input data for this template
+    name: str = Field(description="The name to say hello to")
+
+# If you don't provide `name` at creation, it will raise a ValidationError
+template = HelloWorldFileTemplate(name="World")
+# Model validation is also run when `render` is called
+print(template.render()) # "Hello, World!"
+```
+
 
 ### Advanced Pydantic Model Usage:
 
