@@ -14,6 +14,13 @@ Installation with Jinja2 support, will install Jinja2 as a dependency:
 pip install typed-template[jinja2]
 ```
 
+## Support Template Engines
+
+We currently support the following template engines:
+- [Jinja2](https://jinja.palletsprojects.com/en/3.0.x/)
+- [Django](https://docs.djangoproject.com/en/3.2/topics/templates/)
+
+If you'd like to see support for another template engine, please open an issue or a pull request.
 
 ## Usage
 
