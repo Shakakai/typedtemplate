@@ -1,4 +1,4 @@
-from typing import ClassVar, Optional, Callable
+from typing import ClassVar, Optional
 from pydantic import BaseModel
 from pydantic.fields import PrivateAttr
 import logging

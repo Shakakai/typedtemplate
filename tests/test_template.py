@@ -17,7 +17,7 @@ def test_file_template(file_template: Type[TypedTemplate]):
 
 def test_template_failure(string_template: Type[TypedTemplate]):
     with pytest.raises(Exception):
-        template = string_template()
+        string_template()
         assert False, "Should throw an error due to missing name property"
 
 
