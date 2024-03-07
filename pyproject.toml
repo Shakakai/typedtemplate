@@ -1,6 +1,5 @@
 [project]
 name = "typedtemplate"
-version = "0.1.0"
 description = "A typed string templating library using Pydantic"
 authors = [
     {name = "Todd Cullen", email = "todd@100-x.ai"},
@@ -11,6 +10,7 @@ dependencies = [
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
+dynamic = ['version']
 
 [project.optional-dependencies]
 jinja2 = [
@@ -20,6 +20,20 @@ jinja2 = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+path = 'src/typedtemplate/version.py'
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.sdist]
+include = [
+    '/README.md',
+    '/HISTORY.md',
+    '/Makefile',
+    '/tests',
+    '/requirements',
+]
 
 [tool.pdm]
 distribution = true
