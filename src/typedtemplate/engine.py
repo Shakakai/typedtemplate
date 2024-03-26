@@ -77,6 +77,9 @@ class JinjaTemplateEngine(BaseTemplateEngine):
         except ImportError:
             raise ImportError("Jinja2 is not installed. Please install Jinja2 to use this template engine.")
 
+        if dirs is None:
+            dirs = []
+
         self.env = Environment(loader=FileSystemLoader(dirs), autoescape=False)
 
     def get_template_func(self, template_str: str = None, template_file: str = None) -> TemplateFunc:

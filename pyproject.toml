@@ -30,7 +30,6 @@ allow-direct-references = true
 include = [
     '/README.md',
     '/HISTORY.md',
-    '/Makefile',
     '/tests',
     '/requirements',
 ]
