@@ -17,6 +17,7 @@ class TypedTemplate(BaseModel):
 
     def __init__(
             self,
+            load_template_into_doc_str: bool = False,
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -26,13 +27,7 @@ class TypedTemplate(BaseModel):
             template_file=self.template_file
         )
 
-    def validate_context(self, context: dict) -> dict:
-        ctx = {**self.model_dump(), **context}
-        self.model_validate(ctx)
-        return ctx
-
-    def render(self, context: dict = None) -> str:
-        context = context if context is not None else {}
-        ctx = self.validate_context(context)
-        result = self._template(ctx)
+    def render(self) -> str:
+        self.model_validate(self)
+        result = self._template(self)
         return result

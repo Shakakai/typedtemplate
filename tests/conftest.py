@@ -2,7 +2,7 @@ import os
 from typing import ClassVar, Type
 
 import pytest
-from typedtemplate import TypedTemplate, DjangoTemplateEngine, JinjaTemplateEngine
+from typedtemplate import TypedTemplate, DjangoTemplateEngine, JinjaTemplateEngine, BaseTemplateEngine
 from pydantic import Field
 
 
@@ -37,21 +37,24 @@ def get_jinja_engine():
     return JinjaTemplateEngine(dirs=dirs, debug=True)
 
 
+@pytest.fixture(name="template_engine", params=("jinja_engine", "django_engine"))
+def get_template_engine(request):
+    return request.getfixturevalue(request.param)
+
+
 @pytest.fixture(name="string_template")
-def get_string_template(django_engine: DjangoTemplateEngine) -> Type[TypedTemplate]:
+def get_string_template(template_engine) -> Type[TypedTemplate]:
     class StringTemplate(TypedTemplate):
-        template_engine = django_engine
         template_string: ClassVar[str] = "Hello, {{ name }}!"
         name: str = Field(description="Person's name.")
-
+    StringTemplate.template_engine = template_engine
     return StringTemplate
 
 
 @pytest.fixture(name="file_template")
-def get_file_template(django_engine: DjangoTemplateEngine) -> Type[TypedTemplate]:
+def get_file_template(template_engine) -> Type[TypedTemplate]:
     class FileTemplate(TypedTemplate):
-        template_engine = django_engine
         template_file: ClassVar[str] = "test_template.txt"
         name: str = Field(description="Person's name.")
-
+    FileTemplate.template_engine = template_engine
     return FileTemplate

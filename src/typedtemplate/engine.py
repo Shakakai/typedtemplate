@@ -1,5 +1,5 @@
 from typing import List, Callable
-
+from pydantic import BaseModel
 
 TemplateFunc = Callable[[dict], str]
 
@@ -12,6 +12,9 @@ class BaseTemplateEngine:
     """
 
     def get_template_func(self, template_str: str = None, template_file: str = None) -> TemplateFunc:
+        raise NotImplementedError("Subclasses must implement this method.")
+
+    def get_template_string(self, template_file: str = None) -> str:
         raise NotImplementedError("Subclasses must implement this method.")
 
 
@@ -54,13 +57,13 @@ class DjangoTemplateEngine(BaseTemplateEngine):
         else:
             raise Exception("Either template_str or template_file must be defined.")
 
-        def template_func(context: dict) -> str:
+        def template_func(model: BaseModel) -> str:
             try:
                 from django.template import Context
             except ImportError:
                 raise ImportError("Django is not installed. Please install Django to use this template engine.")
-
-            context = Context(context)
+            context_dict = model.model_dump()
+            context = Context(context_dict)
             return template.render(context)
 
         return template_func
@@ -91,7 +94,7 @@ class JinjaTemplateEngine(BaseTemplateEngine):
         else:
             raise Exception("Either template_str or template_file must be defined.")
 
-        def template_func(context: dict) -> str:
-            return template.render(context)
+        def template_func(model: BaseModel) -> str:
+            return template.render(model)
 
         return template_func
