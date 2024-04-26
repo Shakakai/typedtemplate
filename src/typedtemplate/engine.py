@@ -1,7 +1,7 @@
-from typing import List, Callable
+from typing import List, Callable, Union
 from pydantic import BaseModel
 
-TemplateFunc = Callable[[dict], str]
+TemplateFunc = Callable[[Union[dict, BaseModel]], str]
 
 
 class BaseTemplateEngine:
@@ -57,13 +57,14 @@ class DjangoTemplateEngine(BaseTemplateEngine):
         else:
             raise Exception("Either template_str or template_file must be defined.")
 
-        def template_func(model: BaseModel) -> str:
+        def template_func(model: Union[BaseModel, dict]) -> str:
             try:
                 from django.template import Context
             except ImportError:
                 raise ImportError("Django is not installed. Please install Django to use this template engine.")
-            context_dict = model.model_dump()
-            context = Context(context_dict)
+            if not isinstance(model, dict):
+                model = model.model_dump()
+            context = Context(model)
             return template.render(context)
 
         return template_func
@@ -94,7 +95,7 @@ class JinjaTemplateEngine(BaseTemplateEngine):
         else:
             raise Exception("Either template_str or template_file must be defined.")
 
-        def template_func(model: BaseModel) -> str:
+        def template_func(model: Union[BaseModel, dict]) -> str:
             return template.render(model)
 
         return template_func
